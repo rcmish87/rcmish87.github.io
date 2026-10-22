@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Little Quest • Scratch & Shine</title>
+<style>
+:root{--ink:#26324b;--muted:#69758c;--purple:#7657e8;--pink:#ff739e;--yellow:#ffd45d;--mint:#73dfc0;--sky:#72c9ff;--paper:#fffdf8}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 10% 5%,#fff0c5 0,transparent 25%),radial-gradient(circle at 90% 10%,#e8ddff 0,transparent 27%),#f5f6ff;color:var(--ink);font-family:"Trebuchet MS","Noto Sans Devanagari",system-ui,sans-serif;min-height:100vh}
+button,input,select{font:inherit}button{cursor:pointer;border:0;font-weight:800;transition:transform .15s,filter .15s}button:hover{transform:translateY(-2px);filter:brightness(1.03)}button:focus-visible,input:focus-visible{outline:3px solid #222;outline-offset:2px}
+.wrap{max-width:1240px;margin:auto;padding:20px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:12px}.logo{width:58px;height:58px;border-radius:20px;background:linear-gradient(135deg,#ffdb68,#ff8eb1);display:grid;place-items:center;font-size:32px;box-shadow:0 8px 0 #e9b8ad}.brand h1{margin:0;font-size:clamp(24px,4vw,36px);letter-spacing:-1.5px}.brand p{margin:3px 0 0;color:var(--muted);font-weight:700;font-size:13px}.top-actions{display:flex;gap:8px;flex-wrap:wrap}.soft-btn{background:white;color:var(--ink);padding:11px 14px;border-radius:14px;box-shadow:0 4px 0 #e0e3f1}.hero{margin:28px 0 20px;background:linear-gradient(115deg,#795be9,#a77cf7 60%,#f58bb4);border-radius:28px;padding:24px;color:white;position:relative;overflow:hidden;box-shadow:0 9px 0 #ddd4ff}.hero:after{content:"✦  ✧  ★";position:absolute;right:22px;top:10px;font-size:34px;opacity:.35;letter-spacing:12px}.hero h2{font-size:clamp(25px,4vw,38px);margin:0 0 8px;max-width:700px}.hero p{margin:0;max-width:650px;line-height:1.5;color:#f5efff}.hero .mini{margin-top:17px;display:inline-block;background:#fff;color:#6748d7;border-radius:99px;padding:9px 14px;font-size:13px;font-weight:900}
+.layout{display:grid;grid-template-columns:1fr;gap:20px;align-items:start}.panel{background:rgba(255,255,255,.88);border:2px solid white;border-radius:24px;padding:18px;box-shadow:0 7px 24px #343d6710}.panel h3{margin:0 0 14px;font-size:18px}.profiles{display:grid;gap:10px}.profile{display:flex;align-items:center;gap:11px;text-align:left;background:#f7f7ff;border:2px solid transparent;padding:11px;border-radius:17px;color:var(--ink);width:100%}.profile.active{background:#eee9ff;border-color:#9277f4;box-shadow:0 3px 0 #d7ccff}.avatar{width:47px;height:47px;flex-shrink:0;display:grid;place-items:center;font-size:27px;border-radius:15px;background:#ffe6a3}.profile:nth-child(2) .avatar{background:#d8f8ef}.profile:nth-child(3) .avatar{background:#ffe0ec}.pname{font-weight:900}.pscore{font-size:12px;color:var(--muted);margin-top:3px}.pill{margin-left:auto;background:white;border-radius:99px;padding:6px 9px;font-size:12px;font-weight:900}.add-child{margin-top:10px;width:100%;padding:12px;border-radius:14px;background:#f1edff;color:#6748d7}.leader{margin-top:18px;padding-top:16px;border-top:1px dashed #dfe2f0}.leaderline{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;color:var(--muted)}.leaderline strong{color:var(--ink)}
+.board-head{display:flex;justify-content:space-between;align-items:end;gap:12px;flex-wrap:wrap;margin-bottom:14px}.board-head h2{margin:0;font-size:25px}.board-head p{margin:5px 0 0;color:var(--muted);font-size:13px}.task-count{font-weight:900;color:#7152df;background:#eee9ff;padding:9px 12px;border-radius:12px;font-size:13px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.scratch-card{position:relative;min-height:225px;border-radius:22px;overflow:hidden;background:white;border:2px solid white;box-shadow:0 6px 0 #e4e6f4;isolation:isolate}.scratch-card.done{background:#effcf6;border-color:#b8efda}.under{height:100%;min-height:225px;padding:18px 14px;display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center}.task-emoji{font-size:40px;line-height:1.2;margin-bottom:9px}.task-title{font-weight:900;font-size:17px;line-height:1.25}.task-desc{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.4}.points{margin-top:12px;border-radius:99px;background:#fff1bf;color:#805c00;padding:6px 10px;font-size:12px;font-weight:900}.scratch-layer{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;z-index:2}.scratch-card.revealed .scratch-layer{display:none}.scratch-tag{position:absolute;z-index:3;top:10px;left:10px;border-radius:99px;background:#ffffffd9;color:#5745ad;padding:5px 8px;font-size:10px;font-weight:900;pointer-events:none}.scratch-card.revealed .scratch-tag{display:none}.complete-btn{margin-top:12px;background:#20b98b;color:white;padding:10px 13px;border-radius:12px;box-shadow:0 4px 0 #15966f;font-size:12px}.complete-btn:disabled{background:#b3c4be;box-shadow:none;cursor:default;transform:none}.status{margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff;border-radius:18px;padding:13px 16px;border:2px solid white}.status strong{font-size:14px}.status span{font-size:12px;color:var(--muted)}.footer{text-align:center;color:#8b91a5;font-size:12px;padding:25px 10px}
+dialog{border:0;border-radius:24px;padding:0;width:min(440px,calc(100% - 28px));box-shadow:0 25px 90px #1e244555;color:var(--ink)}dialog::backdrop{background:#20264177;backdrop-filter:blur(4px)}.modal{padding:24px}.modal h2{margin:0 0 7px}.modal p{margin:0 0 18px;color:var(--muted);font-size:14px;line-height:1.5}.field{display:grid;gap:6px;margin:13px 0}.field label{font-size:12px;font-weight:900}.field input,.field select{border:2px solid #e5e6f2;border-radius:12px;padding:12px;background:#fafaff;color:var(--ink);width:100%}.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}.primary{background:var(--purple);color:white;padding:12px 16px;border-radius:13px}.secondary{background:#f0f1fa;color:var(--ink);padding:12px 16px;border-radius:13px}
+.splash-screen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(circle at 12% 15%,#ffe7a6 0,transparent 28%),radial-gradient(circle at 88% 20%,#ffcfe3 0,transparent 25%),radial-gradient(circle at 50% 100%,#c7f8e8 0,transparent 35%),linear-gradient(135deg,#7860e8,#b08cf8 52%,#ff9bbd);overflow:auto;transition:opacity .5s,visibility .5s}
+.splash-screen.hide{opacity:0;visibility:hidden;pointer-events:none}.splash-stars{position:absolute;inset:0;pointer-events:none;font-size:clamp(22px,4vw,42px);color:#fff8;letter-spacing:18px;line-height:2.3;word-break:break-all;padding:15px;animation:floatStars 9s linear infinite}
+@keyframes floatStars{0%{transform:translateY(0)}100%{transform:translateY(-70px)}}
+.splash-card{position:relative;z-index:1;width:min(650px,100%);text-align:center;background:#ffffffed;border:3px solid #ffffffb8;border-radius:36px;padding:clamp(26px,6vw,52px) 24px;box-shadow:0 20px 0 #4b3b9c30,0 35px 80px #37256b44;animation:splashPop .75s cubic-bezier(.2,.9,.25,1.25) both}
+@keyframes splashPop{from{opacity:0;transform:translateY(30px) scale(.88)}to{opacity:1;transform:translateY(0) scale(1)}}
+.splash-logo{width:112px;height:112px;margin:0 auto 18px;border-radius:34px;display:grid;place-items:center;font-size:64px;background:linear-gradient(145deg,#ffdf78,#ff9fbd);box-shadow:0 9px 0 #efb2c2,0 15px 28px #a66b8730;transform:rotate(-5deg)}
+.splash-card h1{font-size:clamp(38px,8vw,64px);line-height:1;margin:0;color:#6045d2;letter-spacing:-2.5px}.splash-card h1 span{color:#f06b9a}.splash-subtitle{font-weight:900;color:#68708b;font-size:clamp(14px,3vw,18px);margin:15px 0 22px}.splash-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 26px}.splash-badges span{background:#f1edff;color:#6650c5;border-radius:99px;padding:8px 12px;font-size:12px;font-weight:900}.splash-start{background:linear-gradient(135deg,#7657e8,#a26df0);color:white;border-radius:17px;padding:15px 25px;font-size:17px;box-shadow:0 5px 0 #5d42c5;min-width:200px}.splash-foot{font-size:12px;color:#9398aa;margin-top:19px;font-weight:700}
+
+.profile-hero-banner{display:flex;align-items:center;gap:22px;text-align:left;background:linear-gradient(120deg,#7860e8,#a77cf7 58%,#f58bb4);color:#fff;padding:24px;border-radius:25px;margin-bottom:22px;box-shadow:0 7px 0 #ded5ff;position:relative;overflow:hidden}
+.profile-hero-banner:after{content:"✦  ★  ✧";position:absolute;right:18px;top:10px;font-size:28px;letter-spacing:8px;opacity:.32}
+.profile-photo-frame{width:116px;height:116px;flex:0 0 116px;border:4px solid #ffffffd9;border-radius:28px;background:#fff4;overflow:hidden;display:grid;place-items:center;font-size:66px;box-shadow:0 7px 0 #4b3b9c30}
+.profile-photo-frame img{width:100%;height:100%;object-fit:cover}
+.profile-hero-copy{min-width:0;position:relative;z-index:1}.profile-hero-kicker{font-size:12px;text-transform:uppercase;letter-spacing:1.7px;font-weight:900;opacity:.86}.profile-hero-name{font-size:clamp(30px,5vw,46px);line-height:1.05;font-weight:1000;margin:5px 0 8px;overflow-wrap:anywhere}.profile-hero-stats{font-weight:800;font-size:14px;opacity:.94}.profile-photo-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.profile-photo-btn{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#6248ce;padding:9px 12px;border-radius:12px;font-size:12px;font-weight:900;cursor:pointer}.profile-photo-btn input{display:none}.profile-gate-choices .profile-choice{position:relative}.profile-choice-photo{width:62px;height:62px;border-radius:20px;overflow:hidden;display:grid;place-items:center;font-size:40px;background:#ffffffa8;flex-shrink:0}.profile-choice-photo img{width:100%;height:100%;object-fit:cover}.profile-choice .big-avatar{display:none}.profile-gate-choices .profile-choice{min-height:142px}
+@media(max-width:520px){.profile-hero-banner{gap:14px;padding:17px;border-radius:20px}.profile-photo-frame{width:82px;height:82px;flex-basis:82px;border-radius:22px;font-size:48px}.profile-hero-name{font-size:28px}.profile-hero-stats{font-size:12px}.profile-choice-photo{width:48px;height:48px;border-radius:15px;font-size:32px}}
+
+.profile-gate{position:fixed;inset:0;z-index:900;display:none;align-items:center;justify-content:center;padding:18px;background:radial-gradient(circle at 15% 10%,#fff0bf 0,transparent 25%),radial-gradient(circle at 85% 15%,#f4d9ff 0,transparent 28%),#f3f2ff;overflow:auto}.profile-gate.show{display:flex}.profile-gate-card{width:min(820px,100%);background:#ffffffed;border:2px solid white;border-radius:30px;padding:clamp(20px,4vw,36px);box-shadow:0 18px 55px #413b7618;text-align:center}.profile-gate-card h2{margin:0;color:#6045d2;font-size:clamp(26px,5vw,38px)}.profile-gate-card>p{color:#747b93;margin:9px 0 24px}.profile-gate-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.profile-choice{background:#f6f4ff;border:3px solid transparent;border-radius:22px;padding:20px 10px;color:var(--ink);min-height:155px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;box-shadow:0 5px 0 #e5e0fa}.profile-choice:nth-child(3n+2){background:#edfbf6;box-shadow:0 5px 0 #d3f2e6}.profile-choice:nth-child(3n){background:#fff1f6;box-shadow:0 5px 0 #f9dce8}.profile-choice .big-avatar{font-size:48px}.profile-choice strong{font-size:17px}.profile-choice small{color:#737b92;font-weight:800}.profile-choice:hover{border-color:#9277f4}.profile-gate-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:22px}.gate-secondary{background:#f0effa;color:#625c83;padding:12px 16px;border-radius:13px;font-weight:900}.app-hidden{display:none!important}
+@media(max-width:520px){.profile-gate-choices{grid-template-columns:1fr}.profile-choice{min-height:90px;flex-direction:row;justify-content:flex-start;padding:12px 20px}.profile-choice .big-avatar{font-size:38px;width:54px}.profile-choice strong{flex:1;text-align:left}.profile-choice small{margin-left:auto}.splash-logo{width:92px;height:92px;font-size:54px;border-radius:28px}}
+
+.scratch-card{cursor:pointer;background:var(--card-bg,#fff);border-color:var(--card-border,#fff)}.scratch-card .under{background:var(--card-bg,#fff)}.scratch-card .scratch-layer{pointer-events:none}.scratch-stage canvas.scratch-layer{pointer-events:auto;touch-action:none;z-index:5}.scratch-card.revealed .scratch-layer{pointer-events:none}.scratch-modal{width:min(560px,calc(100% - 24px));overflow:hidden}.scratch-modal .modal{padding:18px}.scratch-stage{position:relative;height:min(68vh,460px);min-height:300px;border-radius:22px;overflow:hidden;background:#fff;border:2px solid #ecebfa;touch-action:none}.scratch-stage .under{height:100%;min-height:300px;padding:24px}.scratch-stage .task-emoji{font-size:64px}.scratch-stage .task-title{font-size:25px}.scratch-stage .task-desc{font-size:15px;max-width:360px}.scratch-stage canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;z-index:2}.scratch-stage .scratch-tag{font-size:12px;top:15px;left:15px}.scratch-modal .modal-actions{justify-content:space-between}.proof-wrap{margin-top:14px;width:100%;max-width:320px}.proof-label{display:block;font-size:12px;font-weight:900;color:#6c7390;margin-bottom:7px}.proof-btn{width:100%;background:#f1edff;color:#6748d7;border:2px dashed #a995f5;border-radius:14px;padding:12px;font-weight:900}.proof-btn input{display:none}.proof-preview{display:none;width:100%;max-height:180px;object-fit:contain;border-radius:12px;margin-top:8px;border:2px solid #d7ccff;background:#fff}.proof-preview.show{display:block}.proof-status{font-size:12px;color:#16845f;font-weight:900;margin-top:6px}.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#26324b;color:white;padding:13px 18px;border-radius:15px;font-weight:800;box-shadow:0 8px 25px #2224;transition:.25s;z-index:20;text-align:center;max-width:90vw}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.profiles{grid-template-columns:repeat(3,minmax(0,1fr))}.profile{flex-direction:column;text-align:center}.pill{margin:0}.leader{display:none}}
+@media(max-width:520px){.wrap{padding:12px}.hero{padding:20px;border-radius:22px;margin-top:20px}.cards{gap:10px}.scratch-card,.under{min-height:205px}.under{padding:13px 8px}.task-emoji{font-size:34px}.task-title{font-size:15px}.task-desc{font-size:11px}.profiles{grid-template-columns:1fr}.profile{flex-direction:row;text-align:left}.pill{margin-left:auto}.brand h1{font-size:26px}}
+</style>
+</head>
+<body>
+<div class="splash-screen" id="splashScreen">
+  <div class="splash-stars">✦　★　✧　⭐　✦　★　✧　⭐　✦　★　✧　⭐　✦　★　✧</div>
+  <div class="splash-card"><button class="soft-btn" id="languageToggleSplash" style="position:absolute;right:16px;top:16px">🌐 हिन्दी</button>
+    <div class="splash-logo">🎨</div>
+    <h1>Little <span>Quest</span></h1>
+    <p class="splash-subtitle">Scratch a card. Discover a quest. Shine bright!</p>
+    <div class="splash-badges"><span>✨ Mystery cards</span><span>⭐ Earn stars</span><span>🏆 Family fun</span></div>
+    <button class="splash-start" id="startGame">Let's Play! 🚀</button>
+    <div class="splash-foot">A little adventure starts with you 💛</div>
+  </div>
+</div>
+<div class="profile-gate" id="profileGate">
+  <div class="profile-gate-card"><button class="soft-btn" id="languageToggleGate" style="float:right">🌐 हिन्दी</button>
+    <h2>Who's playing today? 🌈</h2>
+    <p>Choose your profile to open your own mystery-card adventure.</p>
+    <div class="profile-gate-choices" id="profileGateChoices"></div>
+    <div class="profile-gate-actions">
+      <button class="gate-secondary" id="gateAddChild">＋ Add a child</button>
+      <button class="gate-secondary" id="gateBack">← Back to welcome</button>
+    </div>
+  </div>
+</div>
+<div class="wrap app-hidden" id="mainApp">
+  <header class="top">
+    <div class="brand"><div class="logo">🎨</div><div><h1>Little Quest</h1><p>Scratch a card. Discover a quest. Shine bright!</p></div></div>
+    <div class="top-actions"><button class="soft-btn" id="languageToggle">🌐 हिन्दी</button><button class="soft-btn" id="switchProfile">👤 Switch profile</button><button class="soft-btn" id="newRound">🔄 New cards</button><button class="soft-btn" id="manageTasks">🧩 Task ideas</button></div>
+  </header>
+  <section class="hero">
+    <h2>Ready for a little adventure?</h2>
+    <p>Pick a mystery card, scratch to reveal your quest, then complete it to earn stars. Learn, create, help at home and have fun together!</p>
+    <span class="mini">⭐ Every quest is a chance to shine!</span>
+  </section>
+  <section class="profile-hero-banner" id="activeProfileBanner">
+    <div class="profile-photo-frame" id="activeProfilePhoto">🦊</div>
+    <div class="profile-hero-copy">
+      <div class="profile-hero-kicker">Your adventure, your stars</div>
+      <div class="profile-hero-name" id="activeProfileName">Player One</div>
+      <div class="profile-hero-stats" id="activeProfileStats">0 stars · 0 quests completed</div>
+      <div class="profile-photo-actions">
+        <label class="profile-photo-btn">📷 Change profile photo<input type="file" id="activeProfilePhotoInput" accept="image/*" capture="user"></label>
+        <button class="profile-photo-btn" id="switchProfileFromBanner">👤 Switch player</button>
+      </div>
+    </div>
+  </section>
+  <main class="layout">
+    <aside class="panel" id="questPlayersPanel" style="display:none">
+      <h3>🌈 Quest players</h3>
+      <div class="profiles" id="profiles"></div>
+      <button class="add-child" id="addChild">＋ Add a child profile</button>
+      <div class="leader"><h3>🏆 Star scoreboard</h3><div id="leaderboard"></div></div>
+    </aside>
+    <section>
+      <div class="board-head"><div><h2>✨ Mystery cards</h2><p>Scratch the silver surface with your finger or mouse.</p></div><div class="task-count" id="remaining">12 mystery cards</div></div>
+      <div class="cards" id="cards"></div>
+      <div class="status"><div><strong id="welcome">Choose a player to begin!</strong><br><span id="hint">Scratch a card to discover a surprise quest.</span></div><button class="soft-btn" id="resetScores">↺ Reset scores</button></div>
+    </section>
+  </main>
+  <div class="footer">Made for curious kids and happy families 💛 • Progress saves on this device</div>
+</div>
+<dialog id="childDialog"><form class="modal" id="childForm"><h2>🌟 Add a player</h2><p>Create a profile so each child can collect their own stars.</p><div class="field"><label for="childName">CHILD'S NAME</label><input id="childName" maxlength="24" required placeholder="e.g. Alex"></div><div class="field"><label for="childAvatar">CHOOSE AN AVATAR</label><select id="childAvatar"><option>🦊 Fox</option><option>🐼 Panda</option><option>🦄 Unicorn</option><option>🐯 Tiger</option><option>🐸 Frog</option><option>🐻 Bear</option><option>🐙 Octopus</option><option>🐰 Bunny</option><option>🦖 Dino</option><option>🐨 Koala</option></select></div><div class="modal-actions"><button type="button" class="secondary" data-close="childDialog">Cancel</button><button class="primary" type="submit">Create profile</button></div></form></dialog>
+<dialog id="tasksDialog"><form class="modal" id="tasksForm"><h2>🧩 Quest ideas</h2><p>Add your own family-friendly tasks. One task is picked for each mystery card.</p><div class="field"><label for="taskText">TASK NAME</label><input id="taskText" maxlength="90" placeholder="e.g. Build a tower from 10 blocks"></div><div class="field"><label for="taskEmoji">EMOJI</label><select id="taskEmoji"><option>🎨</option><option>📚</option><option>🧹</option><option>🎵</option><option>🧠</option><option>🌱</option><option>🧸</option><option>🏃</option><option>💙</option><option>🍎</option><option>✍️</option><option>🤝</option></select></div><div class="field"><label for="taskPoints">STAR POINTS</label><select id="taskPoints"><option value="5">5 stars · Easy</option><option value="10" selected>10 stars · Regular</option><option value="15">15 stars · Challenge</option></select></div><div class="modal-actions"><button type="button" class="secondary" data-close="tasksDialog">Close</button><button class="primary" type="submit">＋ Add quest</button></div></form></dialog>
+<dialog id="scratchDialog" class="scratch-modal"><div class="modal"><h2>🔎 Mystery card</h2><p>Tap and open the card first. Then scratch the surface to discover your quest.</p><div class="scratch-stage" id="scratchStage"></div><div class="modal-actions"><button type="button" class="secondary" id="closeScratch">Close</button><button type="button" class="primary" id="claimScratch" disabled>Task Completed ✓</button></div></div></dialog>
+<div class="toast" id="toast"></div>
+<script>
+(()=>{
+const starterTasks=[
+ {title:"Study for 20 minutes",desc:"Choose a subject and learn something new.",emoji:"📚",points:10,titleHi:"20 मिनट पढ़ाई करें",descHi:"कोई विषय चुनें और कुछ नया सीखें।"},
+ {title:"Draw something blue",desc:"Find a blue object at home and draw it.",emoji:"💙",points:10,titleHi:"नीली चीज़ का चित्र बनाएँ",descHi:"घर में कोई नीली चीज़ ढूँढ़ें और उसका चित्र बनाएँ।"},
+ {title:"Create a cartoon",desc:"Invent a funny character and give it a name.",emoji:"🎨",points:10,titleHi:"कार्टून बनाएँ",descHi:"एक मज़ेदार पात्र सोचें और उसका नाम रखें।"},
+ {title:"Tidy your toys",desc:"Put your toys and books back in their places.",emoji:"🧸",points:10,titleHi:"अपने खिलौने समेटें",descHi:"अपने खिलौने और किताबें उनकी जगह पर रखें।"},
+ {title:"Sing a song",desc:"Sing a favourite song for your family.",emoji:"🎵",points:10,titleHi:"गाना गाएँ",descHi:"अपने परिवार के लिए पसंदीदा गाना गाएँ।"},
+ {title:"Help in the kitchen",desc:"Ask an adult how you can safely help.",emoji:"🥣",points:10,titleHi:"रसोई में मदद करें",descHi:"किसी बड़े से पूछें कि सुरक्षित तरीके से कैसे मदद कर सकते हैं।"},
+ {title:"Read a story",desc:"Read a book or have a story read to you.",emoji:"📖",points:10,titleHi:"कहानी पढ़ें",descHi:"किताब पढ़ें या किसी से कहानी सुनें।"},
+ {title:"Move like an animal",desc:"Do five safe animal moves: hop, stretch or waddle.",emoji:"🐸",points:10,titleHi:"जानवरों की तरह चलें",descHi:"उछलने, अंगड़ाई लेने या डगमगाने जैसी पाँच सुरक्षित हरकतें करें।"},
+ {title:"Build a mini tower",desc:"Build a tower using blocks or paper cups.",emoji:"🧱",points:10,titleHi:"छोटा टावर बनाएँ",descHi:"ब्लॉक्स या कागज़ के कपों से टावर बनाएँ।"},
+ {title:"Kindness mission",desc:"Say something kind or help someone at home.",emoji:"💛",points:10,titleHi:"दयालुता का मिशन",descHi:"कोई अच्छी बात कहें या घर में किसी की मदद करें।"},
+ {title:"Spot five shapes",desc:"Find circles, squares and triangles around you.",emoji:"🔺",points:10,titleHi:"पाँच आकार पहचानें",descHi:"आसपास गोले, वर्ग और त्रिकोण खोजें।"},
+ {title:"Water a plant",desc:"With permission, give a plant a little water.",emoji:"🌱",points:10,titleHi:"पौधे में पानी डालें",descHi:"अनुमति लेकर पौधे में थोड़ा पानी डालें।"},
+ {title:"Make up a story",desc:"Tell a story with a hero, a problem and a happy ending.",emoji:"🦄",points:10,titleHi:"अपनी कहानी बनाएँ",descHi:"नायक, समस्या और सुखद अंत वाली कहानी सुनाएँ।"},
+ {title:"Practice handwriting",desc:"Write your name and three favourite words.",emoji:"✍️",points:10,titleHi:"लिखने का अभ्यास करें",descHi:"अपना नाम और तीन पसंदीदा शब्द लिखें।"},
+ {title:"Sort the socks",desc:"Match clean socks with help from an adult.",emoji:"🧦",points:10,titleHi:"मोज़े छाँटें",descHi:"किसी बड़े की मदद से साफ़ मोज़ों की जोड़ियाँ मिलाएँ।"},
+ {title:"Balance challenge",desc:"Stand on one foot for 10 seconds in a safe space.",emoji:"🤸",points:10,titleHi:"संतुलन की चुनौती",descHi:"सुरक्षित जगह पर 10 सेकंड एक पैर पर खड़े रहें।"},
+ {title:"Learn a fun fact",desc:"Ask an adult or read a book, then share one fact.",emoji:"🧠",points:10,titleHi:"रोचक तथ्य जानें",descHi:"किसी बड़े से पूछें या किताब पढ़ें, फिर एक तथ्य बताएँ।"},
+ {title:"Make a paper creation",desc:"Fold or craft something using scrap paper.",emoji:"✂️",points:10,titleHi:"कागज़ से कुछ बनाएँ",descHi:"पुराने कागज़ को मोड़कर या उससे कुछ बनाएँ।"},
+ {title:"Nature detective",desc:"Look out the window or outdoors and spot three things.",emoji:"🔎",points:10,titleHi:"प्रकृति के जासूस बनें",descHi:"खिड़की से या बाहर देखकर तीन चीज़ें पहचानें।"},
+ {title:"Dance break",desc:"Make up a dance for one favourite song.",emoji:"💃",points:10,titleHi:"नृत्य का समय",descHi:"अपने पसंदीदा गाने पर नया नृत्य बनाएँ."},
+ {title:"Help set the table",desc:"With an adult, arrange safe plates and napkins.",emoji:"🍽️",points:10,titleHi:"मेज़ लगाने में मदद करें",descHi:"किसी बड़े के साथ सुरक्षित प्लेटें और नैपकिन सजाएँ।"},
+ {title:"Invent a new game",desc:"Explain the rules and invite someone to play.",emoji:"🎲",points:10,titleHi:"नया खेल बनाएँ",descHi:"खेल के नियम बताएँ और किसी को खेलने बुलाएँ।"},
+ {title:"Memory challenge",desc:"Look at five objects, cover them, then name them.",emoji:"🧩",points:10,titleHi:"याददाश्त की चुनौती",descHi:"पाँच चीज़ें देखें, ढक दें और फिर उनके नाम बताएँ।"},
+ {title:"Compliment quest",desc:"Give two people a genuine, kind compliment.",emoji:"🌟",points:10,titleHi:"तारीफ़ करने का मिशन",descHi:"दो लोगों को सच्ची और प्यारी तारीफ़ दें।"}
+,
+ {title:"Read for 10 minutes",desc:"Pick a book and tell someone your favourite part.",emoji:"📖",points:10,titleHi:"10 मिनट पढ़ें",descHi:"किताब चुनें और किसी को उसका पसंदीदा हिस्सा बताएँ।"},
+ {title:"Spell five words",desc:"Write five words you know how to spell.",emoji:"✍️",points:10,titleHi:"पाँच शब्दों की वर्तनी लिखें",descHi:"ऐसे पाँच शब्द लिखें जिनकी वर्तनी आपको आती है।"},
+ {title:"Learn three new words",desc:"Find out what three new words mean.",emoji:"🔤",points:10,titleHi:"तीन नए शब्द सीखें",descHi:"तीन नए शब्दों के अर्थ जानें।"},
+ {title:"Practice times tables",desc:"Say or write a times table you are learning.",emoji:"🔢",points:10,titleHi:"पहाड़ों का अभ्यास करें",descHi:"जिस पहाड़े को सीख रहे हैं, उसे बोलें या लिखें।"},
+ {title:"Count backwards",desc:"Count backwards from 30 to 1.",emoji:"🔟",points:10,titleHi:"उल्टी गिनती करें",descHi:"30 से 1 तक उल्टी गिनती करें।"},
+ {title:"Make a number puzzle",desc:"Create a small maths question for someone.",emoji:"🧮",points:10,titleHi:"संख्याओं की पहेली बनाएँ",descHi:"किसी के लिए गणित का छोटा सवाल बनाएँ।"},
+ {title:"Solve a riddle",desc:"Ask someone for a riddle and try to solve it.",emoji:"🧩",points:10,titleHi:"पहेली बुझाएँ",descHi:"किसी से पहेली पूछें और उसे हल करने की कोशिश करें।"},
+ {title:"Draw your dream house",desc:"Draw a house with five interesting details.",emoji:"🏡",points:10,titleHi:"अपने सपनों का घर बनाएँ",descHi:"पाँच दिलचस्प बातों वाला अपने सपनों का घर बनाएँ।"},
+ {title:"Draw a self-portrait",desc:"Draw yourself and add three things you like.",emoji:"🖍️",points:10,titleHi:"अपना चित्र बनाएँ",descHi:"अपना चित्र बनाएँ और पसंद की तीन चीज़ें जोड़ें।"},
+ {title:"Design a superhero",desc:"Create a hero and invent their special power.",emoji:"🦸",points:10,titleHi:"सुपरहीरो की कल्पना करें",descHi:"एक नायक बनाएँ और उसकी खास शक्ति सोचें।"},
+ {title:"Draw with your other hand",desc:"Make a funny picture using your non-writing hand.",emoji:"🎨",points:10,titleHi:"दूसरे हाथ से चित्र बनाएँ",descHi:"जिस हाथ से नहीं लिखते, उससे मज़ेदार चित्र बनाएँ।"},
+ {title:"Make a comic strip",desc:"Draw a story in three or four boxes.",emoji:"💬",points:10,titleHi:"कॉमिक स्ट्रिप बनाएँ",descHi:"तीन या चार खानों में कहानी बनाएँ।"},
+ {title:"Create a paper crown",desc:"Decorate a paper crown with patterns.",emoji:"👑",points:10,titleHi:"कागज़ का मुकुट बनाएँ",descHi:"कागज़ के मुकुट पर डिज़ाइन बनाएँ।"},
+ {title:"Make a bookmark",desc:"Create a bookmark for your favourite book.",emoji:"📚",points:10,titleHi:"बुकमार्क बनाएँ",descHi:"अपनी पसंदीदा किताब के लिए बुकमार्क बनाएँ।"},
+ {title:"Design a greeting card",desc:"Make a kind card for someone at home.",emoji:"💌",points:10,titleHi:"शुभकामना कार्ड बनाएँ",descHi:"घर में किसी के लिए प्यारा कार्ड बनाएँ।"},
+ {title:"Build with recycled boxes",desc:"Use clean boxes to make a little invention.",emoji:"📦",points:10,titleHi:"पुराने डिब्बों से कुछ बनाएँ",descHi:"साफ़ डिब्बों से कोई छोटी नई चीज़ बनाएँ।"},
+ {title:"Make a paper airplane",desc:"Fold a paper airplane and test it safely.",emoji:"✈️",points:10,titleHi:"कागज़ का हवाई जहाज़ बनाएँ",descHi:"कागज़ का हवाई जहाज़ मोड़ें और सुरक्षित उड़ाकर देखें।"},
+ {title:"Create a sock puppet",desc:"Use a clean sock to make a puppet with an adult.",emoji:"🧦",points:10,titleHi:"मोज़े की कठपुतली बनाएँ",descHi:"किसी बड़े की मदद से साफ़ मोज़े की कठपुतली बनाएँ।"},
+ {title:"Make a colour rainbow",desc:"Draw or arrange the colours of a rainbow.",emoji:"🌈",points:10,titleHi:"इंद्रधनुष के रंग बनाएँ",descHi:"इंद्रधनुष के रंग बनाएँ या सही क्रम में सजाएँ।"},
+ {title:"Spot circles at home",desc:"Find five circular objects and name them.",emoji:"⭕",points:10,titleHi:"घर में गोल चीज़ें खोजें",descHi:"पाँच गोल चीज़ें ढूँढ़ें और उनके नाम बताएँ।"},
+ {title:"Find something triangular",desc:"Find a triangle shape or draw one.",emoji:"🔺",points:10,titleHi:"त्रिकोण खोजें",descHi:"त्रिकोण का आकार ढूँढ़ें या उसका चित्र बनाएँ।"},
+ {title:"Sort objects by colour",desc:"Sort safe objects into colour groups.",emoji:"🟡",points:10,titleHi:"रंगों के अनुसार चीज़ें छाँटें",descHi:"सुरक्षित चीज़ों को रंग के अनुसार समूहों में रखें।"},
+ {title:"Find five textures",desc:"Describe five different textures you can feel safely.",emoji:"🖐️",points:10,titleHi:"पाँच बनावट पहचानें",descHi:"पाँच अलग-अलग बनावटों को सुरक्षित तरीके से छूकर बताएँ।"},
+ {title:"Make a sound map",desc:"Close your eyes and name three sounds you hear.",emoji:"👂",points:10,titleHi:"आवाज़ों का नक्शा बनाएँ",descHi:"आँखें बंद करें और सुनाई देने वाली तीन आवाज़ें बताएँ।"},
+ {title:"Guess the animal",desc:"Act like an animal and let someone guess it.",emoji:"🐯",points:10,titleHi:"जानवर का अनुमान लगाएँ",descHi:"किसी जानवर की नकल करें और दूसरे को अनुमान लगाने दें।"},
+ {title:"Name seven fruits",desc:"Name seven fruits without looking them up.",emoji:"🍎",points:10,titleHi:"सात फलों के नाम बताएँ",descHi:"बिना खोजे सात फलों के नाम बताएँ।"},
+ {title:"Name five countries",desc:"Name five countries you have heard of.",emoji:"🌍",points:10,titleHi:"पाँच देशों के नाम बताएँ",descHi:"ऐसे पाँच देशों के नाम बताएँ जिनके बारे में सुना है।"},
+ {title:"Learn a planet fact",desc:"Learn one fact about a planet and share it.",emoji:"🪐",points:10,titleHi:"ग्रह से जुड़ा तथ्य जानें",descHi:"किसी ग्रह का एक तथ्य जानें और साझा करें।"},
+ {title:"Cloud watcher",desc:"Look at clouds and imagine what shapes they make.",emoji:"☁️",points:10,titleHi:"बादलों को देखें",descHi:"बादलों को देखकर कल्पना करें कि वे किस जैसे दिखते हैं।"},
+ {title:"Weather reporter",desc:"Describe today's weather like a TV reporter.",emoji:"🌤️",points:10,titleHi:"मौसम की रिपोर्ट दें",descHi:"आज के मौसम का टीवी रिपोर्टर की तरह वर्णन करें।"},
+ {title:"Plant detective",desc:"Look closely at a plant and notice three details.",emoji:"🌿",points:10,titleHi:"पौधे के बारे में जानें",descHi:"पौधे को देखकर उसकी तीन बातें बताएँ।"},
+ {title:"Bird watcher",desc:"From a safe spot, observe a bird or listen for one.",emoji:"🐦",points:10,titleHi:"पक्षियों को देखें",descHi:"सुरक्षित जगह से पक्षी देखें या उसकी आवाज़ सुनें।"},
+ {title:"Care for a plant",desc:"Check whether a plant needs water with an adult.",emoji:"🪴",points:10,titleHi:"पौधे की देखभाल करें",descHi:"किसी बड़े के साथ जाँचें कि पौधे को पानी चाहिए या नहीं।"},
+ {title:"Save some water",desc:"Think of one way your family can save water.",emoji:"💧",points:10,titleHi:"पानी बचाएँ",descHi:"सोचें कि आपका परिवार पानी कैसे बचा सकता है।"},
+ {title:"Sort recycling",desc:"With an adult, sort suitable clean recyclables.",emoji:"♻️",points:10,titleHi:"रीसाइक्लिंग की चीज़ें छाँटें",descHi:"किसी बड़े के साथ साफ़ रीसाइक्लिंग वाली चीज़ें छाँटें।"},
+ {title:"Switch off unused lights",desc:"Ask an adult which unused light can be switched off.",emoji:"💡",points:10,titleHi:"बिना इस्तेमाल वाली बत्ती बंद करें",descHi:"किसी बड़े से पूछें कि कौन-सी बेकार जलती बत्ती बंद कर सकते हैं।"},
+ {title:"Make a nature picture",desc:"Draw a tree, flower, bird or other nature scene.",emoji:"🌳",points:10,titleHi:"प्रकृति का चित्र बनाएँ",descHi:"पेड़, फूल, पक्षी या प्रकृति का दृश्य बनाएँ।"},
+ {title:"Learn about an insect",desc:"Find out one interesting fact about an insect.",emoji:"🐞",points:10,titleHi:"कीड़े के बारे में जानें",descHi:"किसी कीड़े के बारे में एक रोचक तथ्य जानें।"},
+ {title:"Make a mini nature journal",desc:"Draw or write about something you noticed outdoors.",emoji:"📔",points:10,titleHi:"प्रकृति की छोटी डायरी बनाएँ",descHi:"बाहर देखी चीज़ का चित्र बनाएँ या उसके बारे में लिखें।"},
+ {title:"Stretch like a cat",desc:"Do five gentle stretches in a clear space.",emoji:"🐈",points:10,titleHi:"बिल्ली की तरह अंगड़ाई लें",descHi:"बिल्ली की तरह अंगड़ाई लें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Dance for one minute",desc:"Choose a song and dance safely for one minute.",emoji:"💃",points:10,titleHi:"एक मिनट नाचें",descHi:"एक मिनट नाचें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Invent a silly walk",desc:"Create a safe, funny walk across the room.",emoji:"🚶",points:10,titleHi:"मज़ेदार चाल बनाएँ",descHi:"मज़ेदार चाल बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Try ten star jumps",desc:"Do ten gentle star jumps if comfortable and safe.",emoji:"⭐",points:10,titleHi:"दस हल्की उछल-कूद करें",descHi:"दस हल्की उछल-कूद करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Balance a book",desc:"Try balancing a light book on your head while standing still.",emoji:"📘",points:10,titleHi:"सिर पर किताब संतुलित करें",descHi:"सिर पर किताब संतुलित करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Throw and catch",desc:"Practise catching a soft ball with an adult.",emoji:"🏐",points:10,titleHi:"गेंद उछालें और पकड़ें",descHi:"गेंद उछालें और पकड़ें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make an obstacle course",desc:"Create a simple safe course with cushions and adult help.",emoji:"🏁",points:10,titleHi:"बाधाओं वाला सुरक्षित रास्ता बनाएँ",descHi:"बाधाओं वाला सुरक्षित रास्ता बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Play Simon Says",desc:"Play a round of Simon Says with someone.",emoji:"🗣️",points:10,titleHi:"साइमन सेज़ खेलें",descHi:"साइमन सेज़ खेलें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Teach a dance move",desc:"Show someone a dance move you know.",emoji:"🎶",points:10,titleHi:"नृत्य का एक स्टेप सिखाएँ",descHi:"नृत्य का एक स्टेप सिखाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Take five deep breaths",desc:"Breathe slowly and gently five times.",emoji:"🌬️",points:10,titleHi:"पाँच गहरी साँसें लें",descHi:"पाँच गहरी साँसें लें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Tidy your bookshelf",desc:"Put books back neatly with spines facing out.",emoji:"📚",points:10,titleHi:"किताबों की अलमारी व्यवस्थित करें",descHi:"किताबों की अलमारी व्यवस्थित करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make your bed",desc:"Straighten your blanket and pillows.",emoji:"🛏️",points:10,titleHi:"अपना बिस्तर ठीक करें",descHi:"अपना बिस्तर ठीक करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Put clothes away",desc:"Fold or put away your own clean clothes.",emoji:"👕",points:10,titleHi:"कपड़े समेटें",descHi:"कपड़े समेटें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Pair clean shoes",desc:"Put your shoes together neatly in their place.",emoji:"👟",points:10,titleHi:"जूते जोड़ी में रखें",descHi:"जूते जोड़ी में रखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Organise your pencils",desc:"Put pencils, crayons and pens in order.",emoji:"✏️",points:10,titleHi:"पेंसिलें व्यवस्थित करें",descHi:"पेंसिलें व्यवस्थित करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Wipe your study table",desc:"Ask an adult for a safe cloth and tidy your table.",emoji:"🧽",points:10,titleHi:"पढ़ाई की मेज़ साफ़ करें",descHi:"पढ़ाई की मेज़ साफ़ करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Help sort laundry",desc:"Match clean clothes or socks with an adult.",emoji:"🧺",points:10,titleHi:"कपड़े छाँटने में मदद करें",descHi:"कपड़े छाँटने में मदद करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Set out napkins",desc:"Help set napkins on the table with an adult.",emoji:"🍽️",points:10,titleHi:"मेज़ पर नैपकिन रखें",descHi:"मेज़ पर नैपकिन रखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Water the garden",desc:"Help water a plant or garden with an adult.",emoji:"🚿",points:10,titleHi:"बगीचे में पानी डालें",descHi:"बगीचे में पानी डालें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a thank-you note",desc:"Write or draw a thank-you message for someone.",emoji:"💌",points:10,titleHi:"धन्यवाद का संदेश बनाएँ",descHi:"धन्यवाद का संदेश बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Ask a grandparent a question",desc:"Ask an older family member about a childhood memory.",emoji:"👵",points:10,titleHi:"दादा-दादी से एक सवाल पूछें",descHi:"दादा-दादी से एक सवाल पूछें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Tell a family joke",desc:"Share a clean joke and make someone smile.",emoji:"😄",points:10,titleHi:"परिवार को चुटकुला सुनाएँ",descHi:"परिवार को चुटकुला सुनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Give three compliments",desc:"Say three kind and honest things to people.",emoji:"💖",points:10,titleHi:"तीन तारीफ़ें करें",descHi:"तीन तारीफ़ें करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Help someone for five minutes",desc:"Ask a family member what small help they need.",emoji:"🤝",points:10,titleHi:"पाँच मिनट मदद करें",descHi:"पाँच मिनट मदद करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Practise saying please and thank you",desc:"Use polite words thoughtfully today.",emoji:"🙏",points:10,titleHi:"कृपया और धन्यवाद कहें",descHi:"कृपया और धन्यवाद कहें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Share a favourite memory",desc:"Tell your family about a happy memory.",emoji:"💭",points:10,titleHi:"प्यारी याद साझा करें",descHi:"प्यारी याद साझा करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a family quiz",desc:"Write three questions about your family.",emoji:"❓",points:10,titleHi:"परिवार की प्रश्नोत्तरी बनाएँ",descHi:"परिवार की प्रश्नोत्तरी बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Plan a family game",desc:"Choose a simple game everyone can enjoy.",emoji:"🎲",points:10,titleHi:"परिवार के खेल की योजना बनाएँ",descHi:"परिवार के खेल की योजना बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Read to someone",desc:"Read a short story aloud to a family member.",emoji:"🗣️",points:10,titleHi:"किसी को पढ़कर सुनाएँ",descHi:"किसी को पढ़कर सुनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make up a bedtime story",desc:"Invent a gentle story with a beginning and ending.",emoji:"🌙",points:10,titleHi:"सोने से पहले की कहानी बनाएँ",descHi:"सोने से पहले की कहानी बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Write a mini poem",desc:"Write four lines about an animal or season.",emoji:"📝",points:10,titleHi:"छोटी कविता लिखें",descHi:"छोटी कविता लिखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a secret code",desc:"Make symbols for five letters and write a message.",emoji:"🔐",points:10,titleHi:"गुप्त कोड बनाएँ",descHi:"गुप्त कोड बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Write a postcard",desc:"Write a pretend postcard about a fun day.",emoji:"📮",points:10,titleHi:"पोस्टकार्ड लिखें",descHi:"पोस्टकार्ड लिखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Practise your signature",desc:"Write your name neatly five times.",emoji:"✒️",points:10,titleHi:"अपने हस्ताक्षर का अभ्यास करें",descHi:"अपने हस्ताक्षर का अभ्यास करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a word search",desc:"Hide five words in a simple letter grid.",emoji:"🔎",points:10,titleHi:"शब्द खोज पहेली बनाएँ",descHi:"शब्द खोज पहेली बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a quiz question",desc:"Write one question and check the answer.",emoji:"🧠",points:10,titleHi:"प्रश्नोत्तरी का सवाल बनाएँ",descHi:"प्रश्नोत्तरी का सवाल बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Learn a tongue twister",desc:"Practise a tongue twister three times.",emoji:"👅",points:10,titleHi:"जिह्वा-घुमाव वाक्य सीखें",descHi:"जिह्वा-घुमाव वाक्य सीखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Describe an object",desc:"Describe an object without naming it and let someone guess.",emoji:"🎁",points:10,titleHi:"किसी चीज़ का वर्णन करें",descHi:"किसी चीज़ का वर्णन करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Play memory tray",desc:"Study five safe objects, cover them, and recall them.",emoji:"🧠",points:10,titleHi:"याददाश्त वाली ट्रे का खेल",descHi:"याददाश्त वाली ट्रे का खेल पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Find a pattern",desc:"Spot a pattern at home and draw it.",emoji:"🔷",points:10,titleHi:"कोई पैटर्न खोजें",descHi:"कोई पैटर्न खोजें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a paper mosaic",desc:"Tear or cut paper with adult help and make a picture.",emoji:"🟪",points:10,titleHi:"कागज़ का मोज़ेक बनाएँ",descHi:"कागज़ का मोज़ेक बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Invent a board game",desc:"Draw a path and make three simple rules.",emoji:"🎲",points:10,titleHi:"बोर्ड गेम बनाएँ",descHi:"बोर्ड गेम बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a puzzle for someone",desc:"Draw a picture, cut it into large pieces with help, and reassemble.",emoji:"🧩",points:10,titleHi:"किसी के लिए पहेली बनाएँ",descHi:"किसी के लिए पहेली बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a pretend shop",desc:"Arrange safe toys and practise buying and selling.",emoji:"🛍️",points:10,titleHi:"काल्पनिक दुकान बनाएँ",descHi:"काल्पनिक दुकान बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Design a robot",desc:"Draw a robot and label three things it can do.",emoji:"🤖",points:10,titleHi:"रोबोट का डिज़ाइन बनाएँ",descHi:"रोबोट का डिज़ाइन बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a paper medal",desc:"Create a medal for someone who tried hard.",emoji:"🥇",points:10,titleHi:"कागज़ का पदक बनाएँ",descHi:"कागज़ का पदक बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Build a bridge from blocks",desc:"Build a bridge and test it with a small toy.",emoji:"🌉",points:10,titleHi:"ब्लॉक्स से पुल बनाएँ",descHi:"ब्लॉक्स से पुल बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Sort toys into groups",desc:"Group toys by type, size or colour.",emoji:"🧸",points:10,titleHi:"खिलौनों को समूहों में बाँटें",descHi:"खिलौनों को समूहों में बाँटें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Teach a toy something",desc:"Pretend to teach a toy a skill or a fact.",emoji:"🧸",points:10,titleHi:"खिलौने को कुछ सिखाएँ",descHi:"खिलौने को कुछ सिखाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a mini museum",desc:"Display three objects and explain why you chose them.",emoji:"🏛️",points:10,titleHi:"छोटा संग्रहालय बनाएँ",descHi:"छोटा संग्रहालय बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Practise a musical rhythm",desc:"Tap a rhythm and ask someone to copy it.",emoji:"🥁",points:10,titleHi:"संगीत की ताल का अभ्यास करें",descHi:"संगीत की ताल का अभ्यास करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make music with safe objects",desc:"Create a rhythm using a table tap or paper, not breakable items.",emoji:"🎼",points:10,titleHi:"सुरक्षित चीज़ों से संगीत बनाएँ",descHi:"सुरक्षित चीज़ों से संगीत बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Hum a tune",desc:"Hum a tune and let someone guess the song.",emoji:"🎤",points:10,titleHi:"धुन गुनगुनाएँ",descHi:"धुन गुनगुनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Learn a folk song",desc:"Ask an adult to teach you a family or folk song.",emoji:"🎶",points:10,titleHi:"लोकगीत सीखें",descHi:"लोकगीत सीखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a cheer",desc:"Invent a positive cheer for your family team.",emoji:"📣",points:10,titleHi:"परिवार के लिए उत्साहवर्धक नारा बनाएँ",descHi:"परिवार के लिए उत्साहवर्धक नारा बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a puppet show",desc:"Use toys or puppets to perform a short scene.",emoji:"🎭",points:10,titleHi:"कठपुतली का शो करें",descHi:"कठपुतली का शो करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Act out a fairy tale",desc:"Act out a favourite story with someone.",emoji:"🏰",points:10,titleHi:"परी-कथा का अभिनय करें",descHi:"परी-कथा का अभिनय करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Draw a map of your room",desc:"Draw a simple map showing where things are.",emoji:"🗺️",points:10,titleHi:"अपने कमरे का नक्शा बनाएँ",descHi:"अपने कमरे का नक्शा बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a treasure hunt clue",desc:"Write one easy clue for a family treasure hunt.",emoji:"🗝️",points:10,titleHi:"खज़ाने की खोज का संकेत लिखें",descHi:"खज़ाने की खोज का संकेत लिखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Learn left and right",desc:"Give someone three simple left-right directions.",emoji:"↔️",points:10,titleHi:"बाएँ और दाएँ सीखें",descHi:"बाएँ और दाएँ सीखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Practise tying laces",desc:"Practise tying shoelaces or a simple knot with help.",emoji:"👟",points:10,titleHi:"जूते के फीते बाँधने का अभ्यास करें",descHi:"जूते के फीते बाँधने का अभ्यास करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Fold a paper boat",desc:"Fold a paper boat and decorate it.",emoji:"⛵",points:10,titleHi:"कागज़ की नाव बनाएँ",descHi:"कागज़ की नाव बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a kindness coupon",desc:"Create a coupon offering a helpful chore or kind act.",emoji:"🎟️",points:10,titleHi:"दयालुता का कूपन बनाएँ",descHi:"दयालुता का कूपन बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Choose tomorrow's outfit",desc:"Pick suitable clothes for tomorrow with an adult.",emoji:"👚",points:10,titleHi:"कल के कपड़े चुनें",descHi:"कल के कपड़े चुनें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Pack your school bag",desc:"Check and organise your school things with an adult.",emoji:"🎒",points:10,titleHi:"स्कूल बैग तैयार करें",descHi:"स्कूल बैग तैयार करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Prepare for tomorrow",desc:"Choose one thing to get ready for the next day.",emoji:"📅",points:10,titleHi:"कल की तैयारी करें",descHi:"कल की तैयारी करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Practise a safe kitchen skill",desc:"With an adult, learn a safe task like washing fruit.",emoji:"🍌",points:10,titleHi:"रसोई का सुरक्षित काम सीखें",descHi:"रसोई का सुरक्षित काम सीखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a healthy snack plate",desc:"With an adult, arrange washed fruit or another safe snack.",emoji:"🍓",points:10,titleHi:"स्वस्थ नाश्ते की प्लेट बनाएँ",descHi:"स्वस्थ नाश्ते की प्लेट बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Learn a food fact",desc:"Find one interesting fact about a fruit or vegetable.",emoji:"🥕",points:10,titleHi:"खाने से जुड़ा तथ्य जानें",descHi:"खाने से जुड़ा तथ्य जानें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a colourful plate drawing",desc:"Draw a plate with five different coloured foods.",emoji:"🥗",points:10,titleHi:"रंगीन भोजन की प्लेट बनाएँ",descHi:"रंगीन भोजन की प्लेट बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Drink a glass of water",desc:"Have some water if you are thirsty.",emoji:"💧",points:10,titleHi:"एक गिलास पानी पिएँ",descHi:"एक गिलास पानी पिएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Wash hands properly",desc:"Practise washing hands with soap and water.",emoji:"🫧",points:10,titleHi:"हाथ सही तरह धोएँ",descHi:"हाथ सही तरह धोएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Brush teeth carefully",desc:"Brush your teeth as part of your normal routine.",emoji:"🪥",points:10,titleHi:"ध्यान से दाँत साफ़ करें",descHi:"ध्यान से दाँत साफ़ करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Put rubbish in the bin",desc:"Check your own space and dispose of rubbish properly.",emoji:"🗑️",points:10,titleHi:"कचरा डिब्बे में डालें",descHi:"कचरा डिब्बे में डालें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a mini goal",desc:"Write one thing you want to practise this week.",emoji:"🎯",points:10,titleHi:"छोटा लक्ष्य बनाएँ",descHi:"छोटा लक्ष्य बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Celebrate someone trying",desc:"Tell someone you noticed their effort today.",emoji:"👏",points:10,titleHi:"किसी की कोशिश की सराहना करें",descHi:"किसी की कोशिश की सराहना करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Teach the family a fact",desc:"Share one new thing you learned today.",emoji:"💡",points:10,titleHi:"परिवार को कोई तथ्य बताएँ",descHi:"परिवार को कोई तथ्य बताएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a gratitude list",desc:"Name or write three things you are grateful for.",emoji:"🌼",points:10,titleHi:"आभार की सूची बनाएँ",descHi:"आभार की सूची बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a happy moments jar note",desc:"Write or draw one happy moment on paper.",emoji:"🫙",points:10,titleHi:"खुशी के पल की पर्ची बनाएँ",descHi:"खुशी के पल की पर्ची बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Choose a screen-free activity",desc:"Spend 10 minutes drawing, reading or playing away from screens.",emoji:"🧸",points:10,titleHi:"स्क्रीन से दूर कोई गतिविधि चुनें",descHi:"स्क्रीन से दूर कोई गतिविधि चुनें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Invent a new animal",desc:"Draw an animal and describe where it lives.",emoji:"🦕",points:10,titleHi:"नया जानवर बनाएँ",descHi:"नया जानवर बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Design a flag",desc:"Create a flag for your own imaginary country.",emoji:"🚩",points:10,titleHi:"झंडे का डिज़ाइन बनाएँ",descHi:"झंडे का डिज़ाइन बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Draw an underwater world",desc:"Include at least four sea creatures.",emoji:"🐠",points:10,titleHi:"पानी के नीचे की दुनिया बनाएँ",descHi:"पानी के नीचे की दुनिया बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Draw outer space",desc:"Add a planet, stars and a spaceship.",emoji:"🚀",points:10,titleHi:"अंतरिक्ष का चित्र बनाएँ",descHi:"अंतरिक्ष का चित्र बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a monster with manners",desc:"Draw a monster and write one polite phrase it uses.",emoji:"👾",points:10,titleHi:"शिष्टाचार वाला राक्षस बनाएँ",descHi:"शिष्टाचार वाला राक्षस बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a feelings chart",desc:"Draw faces showing happy, sad, excited and calm.",emoji:"🙂",points:10,titleHi:"भावनाओं का चार्ट बनाएँ",descHi:"भावनाओं का चार्ट बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Practise asking for help",desc:"Role-play how to ask a trusted adult for help.",emoji:"🙋",points:10,titleHi:"मदद माँगने का अभ्यास करें",descHi:"मदद माँगने का अभ्यास करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Solve a household mystery",desc:"Choose a safe missing item and search thoughtfully with permission.",emoji:"🔍",points:10,titleHi:"घर का छोटा रहस्य सुलझाएँ",descHi:"घर का छोटा रहस्य सुलझाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a mini timetable",desc:"Draw a simple plan for after-school time.",emoji:"🗓️",points:10,titleHi:"छोटी समय-सारणी बनाएँ",descHi:"छोटी समय-सारणी बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Play a listening game",desc:"Listen to three instructions and repeat them back.",emoji:"👂",points:10,titleHi:"ध्यान से सुनने का खेल खेलें",descHi:"ध्यान से सुनने का खेल खेलें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a compliment poster",desc:"Draw a poster with positive words.",emoji:"🌟",points:10,titleHi:"तारीफ़ वाला पोस्टर बनाएँ",descHi:"तारीफ़ वाला पोस्टर बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a paper fan",desc:"Fold paper into a fan and decorate it.",emoji:"🪭",points:10,titleHi:"कागज़ का पंखा बनाएँ",descHi:"कागज़ का पंखा बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Draw a vehicle of the future",desc:"Design a vehicle and explain how it works.",emoji:"🚗",points:10,titleHi:"भविष्य के वाहन का चित्र बनाएँ",descHi:"भविष्य के वाहन का चित्र बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a dinosaur fact card",desc:"Draw a dinosaur and add one fact about it.",emoji:"🦖",points:10,titleHi:"डायनासोर का तथ्य कार्ड बनाएँ",descHi:"डायनासोर का तथ्य कार्ड बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Design a book cover",desc:"Create a new cover for a book you like.",emoji:"📕",points:10,titleHi:"किताब का कवर डिज़ाइन करें",descHi:"किताब का कवर डिज़ाइन करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a mini comic hero badge",desc:"Draw a badge for an imaginary hero.",emoji:"🦸",points:10,titleHi:"काल्पनिक नायक का बैज बनाएँ",descHi:"काल्पनिक नायक का बैज बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Build a tiny town",desc:"Use blocks or paper to create a little town.",emoji:"🏙️",points:10,titleHi:"छोटा शहर बनाएँ",descHi:"छोटा शहर बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a paper chain",desc:"Make a short paper chain with adult help.",emoji:"🔗",points:10,titleHi:"कागज़ की झालर बनाएँ",descHi:"कागज़ की झालर बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Draw your favourite meal",desc:"Draw it and label its ingredients.",emoji:"🍲",points:10,titleHi:"अपने पसंदीदा भोजन का चित्र बनाएँ",descHi:"अपने पसंदीदा भोजन का चित्र बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Play categories",desc:"Name an animal, food and colour for each letter you can manage.",emoji:"🔠",points:10,titleHi:"श्रेणियों वाला खेल खेलें",descHi:"श्रेणियों वाला खेल खेलें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a shape creature",desc:"Combine shapes to draw a funny creature.",emoji:"🔵",points:10,titleHi:"आकारों से जीव बनाएँ",descHi:"आकारों से जीव बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Teach someone a game",desc:"Explain a game you know and play a round together.",emoji:"🎮",points:10,titleHi:"किसी को खेल सिखाएँ",descHi:"किसी को खेल सिखाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Finish a puzzle",desc:"Work on a suitable jigsaw or picture puzzle for 10 minutes.",emoji:"🧩",points:10,titleHi:"पहेली पूरी करें",descHi:"पहेली पूरी करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a mini award",desc:"Create an award for kindness, effort or creativity.",emoji:"🏅",points:10,titleHi:"छोटा पुरस्कार बनाएँ",descHi:"छोटा पुरस्कार बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Tell a story with three objects",desc:"Choose three safe objects and include them in a story.",emoji:"📚",points:10,titleHi:"तीन चीज़ों से कहानी सुनाएँ",descHi:"तीन चीज़ों से कहानी सुनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a family handshake",desc:"Invent a friendly handshake with a family member.",emoji:"🤜",points:10,titleHi:"परिवार का खास हैंडशेक बनाएँ",descHi:"परिवार का खास हैंडशेक बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a paper spinner",desc:"Create a simple paper spinner with adult help.",emoji:"🌀",points:10,titleHi:"कागज़ का घूमने वाला खिलौना बनाएँ",descHi:"कागज़ का घूमने वाला खिलौना बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Learn a new greeting",desc:"Learn how to say hello in another language.",emoji:"🌎",points:10,titleHi:"नमस्ते कहने का नया तरीका सीखें",descHi:"नमस्ते कहने का नया तरीका सीखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Draw a map to a treasure",desc:"Create a pretend treasure map with symbols.",emoji:"🏴‍☠️",points:10,titleHi:"खज़ाने का नक्शा बनाएँ",descHi:"खज़ाने का नक्शा बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Do a helpful surprise",desc:"Do one small helpful thing without being asked, if safe.",emoji:"🎁",points:10,titleHi:"बिना कहे मदद करें",descHi:"बिना कहे मदद करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a mini poster about safety",desc:"Draw one safety rule for home or outdoors.",emoji:"🦺",points:10,titleHi:"सुरक्षा पर छोटा पोस्टर बनाएँ",descHi:"सुरक्षा पर छोटा पोस्टर बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Practise crossing-road rules",desc:"With an adult, talk through safe road-crossing steps.",emoji:"🚦",points:10,titleHi:"सड़क पार करने के नियम सीखें",descHi:"सड़क पार करने के नियम सीखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Learn an emergency helper's role",desc:"Talk with an adult about when to call a trusted helper.",emoji:"🚑",points:10,titleHi:"आपातकालीन मददगार की भूमिका जानें",descHi:"आपातकालीन मददगार की भूमिका जानें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a calm corner",desc:"Choose a book or soft toy for a quiet break spot.",emoji:"☁️",points:10,titleHi:"शांत रहने का कोना बनाएँ",descHi:"शांत रहने का कोना बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a dream invention",desc:"Draw an invention that would help people.",emoji:"💡",points:10,titleHi:"मनचाही उपयोगी खोज बनाएँ",descHi:"मनचाही उपयोगी खोज बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Design a playground",desc:"Draw a playground with three safe play features.",emoji:"🛝",points:10,titleHi:"खेल का मैदान डिज़ाइन करें",descHi:"खेल का मैदान डिज़ाइन करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a mini planet guide",desc:"Draw two planets and compare them.",emoji:"🪐",points:10,titleHi:"ग्रहों की छोटी मार्गदर्शिका बनाएँ",descHi:"ग्रहों की छोटी मार्गदर्शिका बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Draw a helpful machine",desc:"Invent a machine that helps with a household job.",emoji:"⚙️",points:10,titleHi:"मददगार मशीन का चित्र बनाएँ",descHi:"मददगार मशीन का चित्र बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a celebration banner",desc:"Make a paper banner for a family celebration.",emoji:"🎉",points:10,titleHi:"उत्सव का बैनर बनाएँ",descHi:"उत्सव का बैनर बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a paper flower",desc:"Fold or draw a flower and give it to someone.",emoji:"🌸",points:10,titleHi:"कागज़ का फूल बनाएँ",descHi:"कागज़ का फूल बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a mini photo-free scrapbook page",desc:"Draw three favourite things on one page.",emoji:"📒",points:10,titleHi:"तस्वीरों के बिना स्क्रैपबुक पन्ना बनाएँ",descHi:"तस्वीरों के बिना स्क्रैपबुक पन्ना बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Invent a new holiday",desc:"Name a pretend holiday and explain how to celebrate it.",emoji:"🎊",points:10,titleHi:"नया त्योहार गढ़ें",descHi:"नया त्योहार गढ़ें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Write a message to future you",desc:"Write one thing you hope to learn this year.",emoji:"✉️",points:10,titleHi:"अपने भविष्य के लिए संदेश लिखें",descHi:"अपने भविष्य के लिए संदेश लिखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Pick a helpful habit",desc:"Choose one small habit to practise today.",emoji:"🌱",points:10,titleHi:"मददगार आदत चुनें",descHi:"मददगार आदत चुनें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Give your room a five-minute reset",desc:"Put away five things that are out of place.",emoji:"🧹",points:10,titleHi:"पाँच मिनट में कमरा व्यवस्थित करें",descHi:"पाँच मिनट में कमरा व्यवस्थित करें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a compliment bookmark",desc:"Decorate a bookmark with an encouraging message.",emoji:"📑",points:10,titleHi:"तारीफ़ वाला बुकमार्क बनाएँ",descHi:"तारीफ़ वाला बुकमार्क बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Learn one animal sound",desc:"Learn or imitate an animal sound and share a fact.",emoji:"🐘",points:10,titleHi:"एक जानवर की आवाज़ सीखें",descHi:"एक जानवर की आवाज़ सीखें पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a mini weather wheel",desc:"Draw sun, clouds, rain and wind on a paper wheel.",emoji:"🌦️",points:10,titleHi:"मौसम का चक्र बनाएँ",descHi:"मौसम का चक्र बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Create a colour scavenger hunt",desc:"Find one safe object for each of three colours.",emoji:"🔴",points:10,titleHi:"रंगों की खोज का खेल बनाएँ",descHi:"रंगों की खोज का खेल बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Invent a secret handshake for a team",desc:"Make a simple handshake with a sibling or adult.",emoji:"🤝",points:10,titleHi:"टीम के लिए गुप्त हैंडशेक बनाएँ",descHi:"टीम के लिए गुप्त हैंडशेक बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Make a gratitude drawing",desc:"Draw a person, place or thing you appreciate.",emoji:"🌻",points:10,titleHi:"आभार का चित्र बनाएँ",descHi:"आभार का चित्र बनाएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"},
+ {title:"Tell someone what you learned",desc:"Share one new skill or fact from today.",emoji:"🎓",points:10,titleHi:"आज सीखी बात किसी को बताएँ",descHi:"आज सीखी बात किसी को बताएँ पूरा करें। अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"}];
+const defaultPlayers=[{id:"p1",name:"Player One",avatar:"🦊",photo:null,score:0,completed:[]},{id:"p2",name:"Player Two",avatar:"🐼",photo:null,score:0,completed:[]},{id:"p3",name:"Player Three",avatar:"🦄",photo:null,score:0,completed:[]}];
+let data;try{data=JSON.parse(localStorage.getItem("littleQuestData")||"null")}catch(e){}
+if(!data||!Array.isArray(data.players)||!Array.isArray(data.tasks))data={players:defaultPlayers,tasks:starterTasks,active:"p1",round:[]};
+data.tasks=[...starterTasks,...data.tasks.filter(t=>t.custom)];
+if(!data.players.length)data.players=defaultPlayers;
+let active=data.active||data.players[0].id;
+const $=id=>document.getElementById(id);
+function save(){data.active=active;localStorage.setItem("littleQuestData",JSON.stringify(data))}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+let currentLanguage=localStorage.getItem("littleQuestLanguage")||"en";
+const UI_HI={"Scratch a card. Discover a quest. Shine bright!": "कार्ड खुरचें। मिशन खोजें। चमक उठें!", "✨ Mystery cards": "✨ रहस्यमयी कार्ड", "⭐ Earn stars": "⭐ सितारे कमाएँ", "🏆 Family fun": "🏆 परिवार के साथ मज़ा", "Let's Play! 🚀": "चलो खेलें! 🚀", "A little adventure starts with you 💛": "छोटा-सा रोमांच आपसे शुरू होता है 💛", "Who's playing today? 🌈": "आज कौन खेलेगा? 🌈", "Choose your profile to open your own mystery-card adventure.": "अपना रहस्यमयी कार्ड वाला रोमांच शुरू करने के लिए प्रोफ़ाइल चुनें।", "＋ Add a child": "＋ बच्चे की प्रोफ़ाइल जोड़ें", "← Back to welcome": "← स्वागत स्क्रीन पर जाएँ", "👤 Switch profile": "👤 प्रोफ़ाइल बदलें", "🔄 New cards": "🔄 नए कार्ड", "🧩 Task ideas": "🧩 काम के सुझाव", "Ready for a little adventure?": "छोटे-से रोमांच के लिए तैयार हैं?", "Pick a mystery card, scratch to reveal your quest, then complete it to earn stars. Learn, create, help at home and have fun together!": "एक रहस्यमयी कार्ड चुनें, उसे खुरचकर काम जानें और पूरा करके सितारे कमाएँ। सीखें, बनाएँ, घर में मदद करें और साथ में मज़े करें!", "⭐ Every quest is a chance to shine!": "⭐ हर मिशन चमकने का एक मौका है!", "Your adventure, your stars": "आपका रोमांच, आपके सितारे", "📷 Change profile photo": "📷 प्रोफ़ाइल की तस्वीर बदलें", "👤 Switch player": "👤 खिलाड़ी बदलें", "🌈 Quest players": "🌈 मिशन के खिलाड़ी", "🏆 Star scoreboard": "🏆 सितारों का स्कोरबोर्ड", "Scratch the silver surface with your finger or mouse.": "चाँदी जैसी सतह को उँगली या माउस से खुरचें।", "Choose a player to begin!": "शुरू करने के लिए खिलाड़ी चुनें!", "Scratch a card to discover a surprise quest.": "छिपा हुआ मज़ेदार काम जानने के लिए कार्ड खुरचें।", "↺ Reset scores": "↺ स्कोर रीसेट करें", "Made for curious kids and happy families 💛 • Progress saves on this device": "जिज्ञासु बच्चों और खुशहाल परिवारों के लिए 💛 • आपकी प्रगति इसी डिवाइस पर सेव होती है", "🌟 Add a player": "🌟 खिलाड़ी जोड़ें", "Create a profile so each child can collect their own stars.": "हर बच्चे के अपने सितारे जमा करने के लिए प्रोफ़ाइल बनाएँ।", "CHILD'S NAME": "बच्चे का नाम", "CHOOSE AN AVATAR": "एक अवतार चुनें", "Cancel": "रद्द करें", "Create profile": "प्रोफ़ाइल बनाएँ", "Add your own family-friendly tasks. One task is picked for each mystery card.": "अपने परिवार के लिए अच्छे काम जोड़ें। हर रहस्यमयी कार्ड के लिए एक काम चुना जाएगा।", "TASK NAME": "काम का नाम", "EMOJI": "इमोजी", "STAR POINTS": "सितारों के अंक", "Close": "बंद करें", "＋ Add quest": "＋ काम जोड़ें", "🔎 Mystery card": "🔎 रहस्यमयी कार्ड", "Tap and open the card first. Then scratch the surface to discover your quest.": "पहले कार्ड खोलें। फिर सतह खुरचकर अपना काम जानें।", "📷 Submit Photo": "📷 फोटो जमा करें", "STEP 1 · SUBMIT A PHOTO": "चरण 1 · फोटो जमा करें", "Task Completed ✓": "काम पूरा हुआ ✓", "Mystery Quest": "रहस्यमयी मिशन", "Tap to open this card and scratch to reveal your task.": "कार्ड खोलने के लिए टैप करें, फिर खुरचकर काम जानें।", "Try your best and have fun!": "अपनी पूरी कोशिश करें और मज़े करें!"};
+function tr(s){return currentLanguage==="hi"?(UI_HI[s]||s):s}
+function taskTitle(t){return currentLanguage==="hi"?(t.titleHi||t.title):t.title}
+function taskDesc(t){return currentLanguage==="hi"?(t.descHi||"अपनी पूरी कोशिश करें और सुरक्षित तरीके से मज़े करें।"):(t.desc||"Try your best and have fun!")}
+function setLanguage(lang){currentLanguage=lang;localStorage.setItem("littleQuestLanguage",lang);document.documentElement.lang=lang==="hi"?"hi":"en";["languageToggle","languageToggleSplash","languageToggleGate"].forEach(id=>{const b=$(id);if(b)b.textContent=lang==="hi"?"🌐 English":"🌐 हिन्दी"});document.querySelectorAll("body *").forEach(el=>{if(el.children.length===0&&el.tagName!=="SCRIPT"&&el.tagName!=="STYLE"){const raw=(el.textContent||"").trim();if(UI_HI[raw])el.textContent=lang==="hi"?UI_HI[raw]:Object.keys(UI_HI).find(k=>UI_HI[k]===raw)||raw;}if(el.placeholder){if(lang==="hi"&&el.placeholder==="e.g. Alex")el.placeholder="जैसे आरव";else if(lang==="en"&&el.placeholder==="जैसे आरव")el.placeholder="e.g. Alex"}});renderCards();renderProfiles();renderProfileGate();updateStatus()}
+
+function player(){return data.players.find(p=>p.id===active)||data.players[0]}
+function toast(msg){const el=$("toast");el.textContent=msg;el.classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove("show"),2400)}
+function renderProfiles(){
+ $("profiles").innerHTML=data.players.map(p=>`<button class="profile ${p.id===active?"active":""}" data-player="${p.id}"><span class="avatar">${p.avatar}</span><span><span class="pname">${escapeHtml(p.name)}</span><span class="pscore" style="display:block">${p.score} ⭐ · ${p.completed.length} quests</span></span><span class="pill">${p.score}★</span></button>`).join("");
+ $("profiles").querySelectorAll("[data-player]").forEach(b=>b.onclick=()=>{active=b.dataset.player;save();renderProfiles();renderCards();updateStatus()});
+ $("leaderboard").innerHTML=[...data.players].sort((a,b)=>b.score-a.score).map((p,i)=>`<div class="leaderline"><span>${["🥇","🥈","🥉","⭐"][Math.min(i,3)]} ${escapeHtml(p.name)}</span><strong>${p.score} ⭐</strong></div>`).join("");
+}
+function shuffleTasks(){let pool=[...data.tasks].sort(()=>Math.random()-.5);const palettes=[["#fff1c9","#ffcf65"],["#ffe0ec","#ff9fbe"],["#dff8ee","#8edfc3"],["#e3efff","#9cc9ff"],["#eee5ff","#bca8ff"],["#ffe9d9","#ffb987"],["#e0f7fb","#88dce8"],["#f8e4ff","#d8a5f1"],["#f5f7cf","#d6df77"],["#ffe2d5","#ffad98"],["#e4e6ff","#a8b0ff"],["#e2f5d0","#a9d77d"]];data.round=Array.from({length:12},(_,i)=>({...pool[i%pool.length],cardId:"c"+Date.now()+i,revealed:false,done:false,proof:null,palette:palettes[Math.floor(Math.random()*palettes.length)]}));save()}
+function renderCards(){
+ if(!Array.isArray(data.round)||data.round.length!==12)shuffleTasks();
+ $("cards").innerHTML=data.round.map((t,i)=>{const palette=t.palette||["#fff1c9","#ffe0ec"];return `<article class="scratch-card ${t.revealed?"revealed":""} ${t.done?"done":""}" style="--card-bg:${palette[0]};--card-border:${palette[1]}" data-card="${i}" role="button" tabindex="0" aria-label="Open mystery card ${i+1}"><div class="under"><div class="task-emoji">${t.done?"✅":t.revealed?t.emoji:"❔"}</div><div class="task-title">${t.revealed?escapeHtml(taskTitle(t)):tr("Mystery Quest")}</div><div class="task-desc">${t.revealed?escapeHtml(taskDesc(t)):tr("Tap to open this card and scratch to reveal your task.")}</div><span class="points">${t.revealed?"⭐ "+t.points+(currentLanguage==="hi"?" अंक":" points"):(currentLanguage==="hi"?"✨ खोलने के लिए टैप करें":"✨ Tap to open")}</span><button class="complete-btn" data-complete="${i}" ${!t.revealed||t.done?"disabled":""}>${t.done?(currentLanguage==="hi"?"काम पूरा ✓":"Quest completed ✓"):t.revealed?(t.proof?(currentLanguage==="hi"?"📸 फोटो जुड़ी · सितारे लें":"📸 Proof added · Claim stars"):(currentLanguage==="hi"?"📷 फोटो जोड़ें":"📷 Add photo proof")):(currentLanguage==="hi"?"शुरू करने के लिए खोलें":"Open card to begin")}</button></div><span class="scratch-tag">${t.revealed?(currentLanguage==="hi"?"काम खुल गया":"QUEST REVEALED"):(currentLanguage==="hi"?"रहस्यमयी कार्ड ✨":"MYSTERY CARD ✨")}</span></article>`}).join("");
+ document.querySelectorAll(".scratch-card").forEach(card=>{
+   const i=+card.dataset.card;
+   card.addEventListener("click",e=>{if(e.target.closest("[data-complete]"))return;openScratch(i)});
+   card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openScratch(i)}});
+ });
+ document.querySelectorAll("[data-complete]").forEach(b=>b.onclick=e=>{e.stopPropagation();if(data.round[+b.dataset.complete].revealed)completeTask(+b.dataset.complete);else openScratch(+b.dataset.complete)});
+ $("remaining").textContent=`${data.round.filter(t=>!t.revealed).length} ${currentLanguage==="hi"?"रहस्यमयी कार्ड":"mystery cards"}`;
+}
+function openScratch(i){
+ const t=data.round[i];if(!t)return;
+ const stage=$("scratchStage");stage.dataset.card=String(i);
+ stage.innerHTML=`<div class="under"><div class="task-emoji">${t.done?"✅":t.emoji}</div><div class="task-title">${escapeHtml(taskTitle(t))}</div><div class="task-desc">${escapeHtml(taskDesc(t))}</div><span class="points">⭐ ${t.points} ${currentLanguage==="hi"?"अंक":"points"}</span><div class="proof-wrap"><span class="proof-label">${currentLanguage==="hi"?"📸 चरण 1 · फोटो जमा करें":"📸 STEP 1 · SUBMIT A PHOTO"}</span><label class="proof-btn">${currentLanguage==="hi"?"📷 फोटो जमा करें":"📷 Submit Photo"}<input type="file" id="proofPhoto" accept="image/*" capture="environment" ${t.done?"disabled":""}></label><img id="proofPreview" class="proof-preview" alt="${currentLanguage==="hi"?"फोटो का पूर्वावलोकन":"Photo proof preview"}"><div class="proof-status" id="proofStatus">${t.proof?(currentLanguage==="hi"?"✓ फोटो प्रमाण के रूप में जोड़ी गई":"✓ Photo added as proof"):""}</div></div></div>`;
+ $("claimScratch").disabled=!t.revealed||t.done;
+ $("claimScratch").textContent=t.done?(currentLanguage==="hi"?"पहले ही पूरा हो चुका":"Already completed"):(currentLanguage==="hi"?"काम पूरा ✓":"Task Completed ✓");
+ $("claimScratch").disabled=!t.revealed||!t.proof||t.done;
+ let scratchCanvas=null;
+ if(!t.revealed){
+   scratchCanvas=document.createElement("canvas");scratchCanvas.className="scratch-layer";scratchCanvas.setAttribute("aria-label","Scratch to reveal your quest");stage.appendChild(scratchCanvas);
+ } else {
+   stage.querySelector(".under").style.background=t.done?"#effcf6":"#fff";
+ }
+ const photoInput=$("scratchStage").querySelector("#proofPhoto");
+ if(photoInput)photoInput.addEventListener("change",e=>{
+   const file=e.target.files&&e.target.files[0];if(!file)return;
+   if(!file.type.startsWith("image/")){toast(currentLanguage==="hi"?"कृपया तस्वीर वाली फ़ाइल चुनें।":"Please choose an image file.");return}
+   const reader=new FileReader();
+   reader.onload=()=>{const current=data.round[i];if(!current)return;current.proof=reader.result;save();$("claimScratch").disabled=!current.revealed||current.done;$("claimScratch").textContent=currentLanguage==="hi"?"काम पूरा ✓":"Task Completed ✓";const preview=$("scratchStage").querySelector("#proofPreview");const status=$("scratchStage").querySelector("#proofStatus");if(preview){preview.src=reader.result;preview.classList.add("show")}if(status)status.textContent="✓ Photo added as proof";const card=document.querySelector(`[data-card="${i}"] .complete-btn`);if(card&&current.revealed&&!current.done)card.textContent="📸 Proof added · Claim stars";toast("Photo proof added! Ask an adult to check it. 📸")};
+   reader.readAsDataURL(file);
+ });
+ const existingProof=$("scratchStage").querySelector("#proofPreview");
+ if(t.proof&&existingProof){existingProof.src=t.proof;existingProof.classList.add("show")}
+ $("scratchDialog").showModal();
+ // Important: initialize the canvas only AFTER the dialog is visible.
+ // Before showModal(), its measured size is 0x0, leaving the task uncovered.
+ if(scratchCanvas)requestAnimationFrame(()=>setupModalScratch(scratchCanvas,i));
+}
+function setupModalScratch(canvas,i){
+ const ctx=canvas.getContext("2d");let scratching=false,last=null,hasRevealed=false;
+ const draw=()=>{
+   const r=canvas.getBoundingClientRect();
+   if(!r.width||!r.height){requestAnimationFrame(draw);return}
+   const dpr=Math.max(1,window.devicePixelRatio||1);
+   canvas.width=Math.round(r.width*dpr);canvas.height=Math.round(r.height*dpr);
+   ctx.setTransform(dpr,0,0,dpr,0,0);
+   ctx.globalCompositeOperation="source-over";
+   const g=ctx.createLinearGradient(0,0,r.width,r.height);
+   g.addColorStop(0,"#9fa5b8");g.addColorStop(.28,"#e4e6ee");g.addColorStop(.55,"#b8bdcc");g.addColorStop(1,"#8f96ab");
+   ctx.fillStyle=g;ctx.fillRect(0,0,r.width,r.height);
+   // Add a fully opaque decorative coating so the task cannot be seen before scratching.
+   ctx.fillStyle="rgba(255,255,255,.14)";
+   for(let x=-r.height;x<r.width;x+=34){ctx.save();ctx.translate(x,0);ctx.rotate(-.35);ctx.fillRect(0,-r.height,10,r.height*2);ctx.restore()}
+   ctx.textAlign="center";ctx.fillStyle="#4b5269";ctx.font="900 17px Trebuchet MS";
+   ctx.fillText(currentLanguage==="hi"?"खुरचकर काम जानें":"SCRATCH TO REVEAL",r.width/2,r.height/2-15);
+   ctx.font="40px sans-serif";ctx.fillText(["🌈","⭐","🎈","🪄","🦋","🍭","🎁","✨"][i%8],r.width/2,r.height/2+38);
+   ctx.font="12px Trebuchet MS";ctx.fillText(currentLanguage==="hi"?"उँगली या माउस से खुरचें":"Use your finger or mouse",r.width/2,r.height/2+75);
+ };
+ draw();
+ function point(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+ function scratch(e){
+   if(!scratching||hasRevealed)return;e.preventDefault();
+   const p=point(e);ctx.globalCompositeOperation="destination-out";
+   ctx.beginPath();ctx.arc(p.x,p.y,25,0,Math.PI*2);ctx.fill();
+   if(last){ctx.lineWidth=50;ctx.lineCap="round";ctx.lineJoin="round";ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke()}
+   last=p;
+   // Sample alpha pixels across the overlay to estimate the scratched-away area.
+   let px;try{px=ctx.getImageData(0,0,canvas.width,canvas.height).data}catch(err){return}
+   let transparent=0,total=0;const stride=4*20;
+   for(let k=3;k<px.length;k+=stride){total++;if(px[k]<40)transparent++}
+   if(total&&transparent/total>.28){
+     hasRevealed=true;const task=data.round[i];if(!task)return;
+     task.revealed=true;save();canvas.remove();
+     $("claimScratch").disabled=!task.proof||task.done;
+     $("claimScratch").textContent=currentLanguage==="hi"?"काम पूरा ✓":"Task Completed ✓";
+     $("remaining").textContent=`${data.round.filter(x=>!x.revealed).length} ${currentLanguage==="hi"?"रहस्यमयी कार्ड":"mystery cards"}`;
+     renderCards();updateStatus();toast("You scratched the card! Quest revealed! ✨");
+   }
+ }
+ canvas.addEventListener("pointerdown",e=>{if(hasRevealed)return;scratching=true;last=null;try{canvas.setPointerCapture(e.pointerId)}catch(err){}scratch(e)});
+ canvas.addEventListener("pointermove",scratch);
+ ["pointerup","pointercancel","pointerleave"].forEach(ev=>canvas.addEventListener(ev,()=>{scratching=false;last=null}));
+}
+function setupScratch(canvas,i){
+ const card=data.round[i];const ctx=canvas.getContext("2d");const dpr=Math.max(1,window.devicePixelRatio||1);
+ const draw=()=>{const r=canvas.getBoundingClientRect();if(!r.width||!r.height)return;canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+ const grad=ctx.createLinearGradient(0,0,r.width,r.height);grad.addColorStop(0,"#c9cbd7");grad.addColorStop(.45,"#f0f1f6");grad.addColorStop(1,"#b7bac9");ctx.fillStyle=grad;ctx.fillRect(0,0,r.width,r.height);
+ ctx.fillStyle="#7d8297";ctx.font="900 14px Trebuchet MS";ctx.textAlign="center";ctx.fillText("✦  SCRATCH TO REVEAL  ✦",r.width/2,r.height/2-4);
+ ctx.font="26px sans-serif";ctx.fillText(["🌈","⭐","🎈","🪄","🦋","🍭"][i%6],r.width/2,r.height/2+34);
+ ctx.globalAlpha=.18;for(let x=12;x<r.width;x+=24)for(let y=12;y<r.height;y+=24){ctx.beginPath();ctx.arc(x,y,1.5,0,Math.PI*2);ctx.fillStyle="#fff";ctx.fill()}ctx.globalAlpha=1;
+ };if(card.revealed)return;draw();
+ let scratching=false,last=null;
+ function point(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+ function scratch(e){if(!scratching)return;e.preventDefault();const p=point(e);ctx.globalCompositeOperation="destination-out";ctx.beginPath();ctx.arc(p.x,p.y,19,0,Math.PI*2);ctx.fill();if(last){ctx.lineWidth=38;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke()}last=p;
+ let pixels;try{pixels=ctx.getImageData(0,0,canvas.width,canvas.height).data}catch(err){return}
+ let transparent=0;const stride=32;for(let k=3;k<pixels.length;k+=4*stride)if(pixels[k]<30)transparent++;
+ if(transparent/(pixels.length/4/stride)>.42){data.round[i].revealed=true;save();canvas.parentElement.classList.add("revealed");canvas.style.display="none";canvas.parentElement.querySelector(".complete-btn").disabled=false;$("remaining").textContent=`${data.round.filter(t=>!t.revealed).length} ${currentLanguage==="hi"?"रहस्यमयी कार्ड":"mystery cards"}`;toast("Quest revealed! You can do it! ✨");updateStatus()}
+ }
+ canvas.addEventListener("pointerdown",e=>{if(data.round[i].revealed)return;scratching=true;last=null;canvas.setPointerCapture?.(e.pointerId);scratch(e)});
+ canvas.addEventListener("pointermove",scratch);["pointerup","pointercancel","pointerleave"].forEach(ev=>canvas.addEventListener(ev,()=>{scratching=false;last=null}));
+}
+function completeTask(i){const t=data.round[i];if(!t||!t.revealed||t.done)return;if(!t.proof){toast(currentLanguage==="hi"?"पहले पूरा किए गए काम की फोटो जोड़ें। 📸":"Please add a photo showing the completed task first. 📸");openScratch(i);return}const p=player();t.done=true;p.score+=Number(t.points)||5;p.completed.push({title:taskTitle(t),points:t.points,at:Date.now()});save();renderCards();renderProfiles();updateStatus();toast(currentLanguage==="hi"?`शाबाश, ${p.name}! +${t.points} सितारे ⭐`:`Brilliant, ${p.name}! +${t.points} stars ⭐`)}
+function updateStatus(){const p=player();$("welcome").textContent=currentLanguage==="hi"?`आप खेल रहे हैं: ${p.name} ${p.avatar}`:`You're playing as ${p.name} ${p.avatar}`;$("hint").textContent=currentLanguage==="hi"?`${p.score} सितारे मिले · ${p.completed.length} काम पूरे। आगे बढ़ते रहें!`:`${p.score} stars collected · ${p.completed.length} quests completed. Keep exploring!`;const photo=$("activeProfilePhoto");photo.innerHTML=p.photo?`<img src="${p.photo}" alt="${escapeHtml(p.name)}'s profile photo">`:p.avatar;$("activeProfileName").textContent=p.name;$("activeProfileStats").textContent=currentLanguage==="hi"?`${p.score} सितारे · ${p.completed.length} काम पूरे`:`${p.score} stars collected · ${p.completed.length} quests completed`;}
+function renderProfileGate(){
+ $("profileGateChoices").innerHTML=data.players.map(p=>`<button class="profile-choice" data-gate-player="${p.id}"><span class="profile-choice-photo">${p.photo?`<img src="${p.photo}" alt="">`:p.avatar}</span><strong>${escapeHtml(p.name)}</strong><small>${p.score} ⭐</small></button>`).join("");
+ $("profileGateChoices").querySelectorAll("[data-gate-player]").forEach(b=>b.onclick=()=>{active=b.dataset.gatePlayer;save();renderProfiles();renderCards();updateStatus();$("profileGate").classList.remove("show");$("mainApp").classList.remove("app-hidden");toast(`Welcome back, ${player().name}! 🎉`)});
+}
+$("startGame").onclick=()=>{$("splashScreen").classList.add("hide");renderProfileGate();$("profileGate").classList.add("show")};
+$("gateBack").onclick=()=>{$("profileGate").classList.remove("show");$("splashScreen").classList.remove("hide")};
+$("switchProfile").onclick=()=>{renderProfileGate();$("profileGate").classList.add("show")};
+$("switchProfileFromBanner").onclick=()=>{renderProfileGate();$("profileGate").classList.add("show")};
+$("activeProfilePhotoInput").addEventListener("change",e=>{const file=e.target.files&&e.target.files[0];if(!file)return;if(!file.type.startsWith("image/")){toast(currentLanguage==="hi"?"कृपया तस्वीर वाली फ़ाइल चुनें।":"Please choose an image file.");return}const reader=new FileReader();reader.onload=()=>{const p=player();p.photo=reader.result;save();updateStatus();renderProfileGate();toast("Profile photo updated! 📸")};reader.readAsDataURL(file)});
+$("gateAddChild").onclick=()=>{$("childName").value="";$("childDialog").showModal();$("childName").focus()};
+$("addChild").onclick=()=>{$("childName").value="";$("childDialog").showModal();$("childName").focus()};
+$("childForm").onsubmit=e=>{e.preventDefault();const name=$("childName").value.trim();if(!name)return;if(data.players.length>=10){toast("You can add up to 10 players.");return}const avatar=$("childAvatar").value.split(" ")[0];const p={id:"p"+Date.now(),name,avatar,photo:null,score:0,completed:[]};data.players.push(p);active=p.id;save();$("childDialog").close();renderProfiles();renderCards();updateStatus();if($("profileGate").classList.contains("show")){$("profileGate").classList.remove("show");$("mainApp").classList.remove("app-hidden")}renderProfileGate();toast(`Welcome to the quest, ${name}! 🎉`)};
+$("manageTasks").onclick=()=>$("tasksDialog").showModal();
+$("tasksForm").onsubmit=e=>{e.preventDefault();const title=$("taskText").value.trim();if(!title){toast("Write a task name first.");return}data.tasks.push({title,desc:"Give it a try and have fun!",titleHi:title,descHi:"इसे आज़माएँ और मज़े करें!",emoji:$("taskEmoji").value,points:+$("taskPoints").value,custom:true});save();$("taskText").value="";$("tasksDialog").close();toast(currentLanguage==="hi"?"आपका नया काम जोड़ दिया गया! 🧩":"Your new quest has been added! 🧩")};
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>$(b.dataset.close).close());
+$("closeScratch").onclick=()=>$("scratchDialog").close();
+$("claimScratch").onclick=()=>{const i=+$("scratchStage").dataset.card;const t=data.round[i];if(t&&t.revealed&&!t.done){if(!t.proof){toast("Submit a photo first, then tap Task Completed. 📸");return}$("scratchDialog").close();completeTask(i)}else if(t&&t.done){$("scratchDialog").close()}};
+$("scratchDialog").addEventListener("close",()=>{});
+$("newRound").onclick=()=>{shuffleTasks();renderCards();toast(currentLanguage==="hi"?"नए रहस्यमयी कार्ड तैयार हैं! ✨":"Fresh mystery cards are ready! ✨")};
+$("resetScores").onclick=()=>{if(confirm("Reset every player's stars and completed quests? This cannot be undone.")){data.players.forEach(p=>{p.score=0;p.completed=[]});save();renderProfiles();renderCards();updateStatus();toast(currentLanguage==="hi"?"स्कोर रीसेट हो गए। नई शुरुआत! 🌱":"Scores reset. A fresh start! 🌱")}};
+window.addEventListener("resize",()=>{document.querySelectorAll(".scratch-layer").forEach((c,i)=>{if(!data.round[i]?.revealed){const clone=c.cloneNode(false);c.replaceWith(clone);setupScratch(clone,i)}})});
+["languageToggle","languageToggleSplash","languageToggleGate"].forEach(id=>{const b=$(id);if(b)b.onclick=()=>setLanguage(currentLanguage==="en"?"hi":"en")});if(!data.round||data.round.length!==12)shuffleTasks();renderProfiles();renderCards();updateStatus();renderProfileGate();setLanguage(currentLanguage);
+})();
+</script>
+</body>
+</html>
